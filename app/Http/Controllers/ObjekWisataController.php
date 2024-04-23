@@ -85,7 +85,7 @@ class ObjekWisataController extends Controller
                 'fasilitas' => $request->fasilitas,
             ]);
             foreach ($temporary_images as $temporary_image) {
-                File::copy(base_path('public/images/tmp/' . $temporary_image->folder . '/' . $temporary_image->file), base_path('public/images/objekwisata/' . $temporary_image->folder . '/' . $temporary_image->file));
+                File::copy(public_path('images/tmp/' . $temporary_image->folder . '/' . $temporary_image->file), public_path('images/objekwisata/' . $temporary_image->folder . '/' . $temporary_image->file));
                 Image::create([
                     'objek_wisata_id' => $objek_wisata->id,
                     'name' => $temporary_image->file,
@@ -265,7 +265,7 @@ class ObjekWisataController extends Controller
         }
 
         foreach ($temporary_images as $temporary_image) {
-            File::copy(base_path('public/images/tmp/' . $temporary_image->folder . '/' . $temporary_image->file), base_path('public/images/objekwisata/' . $temporary_image->folder . '/' . $temporary_image->file));
+            File::copy(public_path('images/tmp/' . $temporary_image->folder . '/' . $temporary_image->file), public_path('images/objekwisata/' . $temporary_image->folder . '/' . $temporary_image->file));
             Image::create([
                 'objek_wisata_id' => $id,
                 'name' => $temporary_image->file,

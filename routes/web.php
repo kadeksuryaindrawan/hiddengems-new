@@ -28,9 +28,13 @@ Route::get('/about',[LandingController::class,'about']);
 
 Route::get('/destination', [LandingController::class,'destination']);
 
+Route::get('/destination/{id}', [LandingController::class, 'destinationkategori'])->name('destinationkategori');
+
 Route::get('/detail/{id}', [LandingController::class,'detail'])->name('detail');
 
 Route::get('/contact', [LandingController::class,'contact']);
+
+Route::get('/search', [LandingController::class, 'search'])->name('search');
 
 Auth::routes([
     'register' => false,

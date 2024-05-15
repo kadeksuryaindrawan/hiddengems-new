@@ -3,8 +3,8 @@
 @section('content')
 
 @php
-    $page = 'kategori';
-    $title = 'Kategori';
+    $page = 'jeniswisata';
+    $title = 'Jenis Wisata';
 @endphp
 
 <div class="page-heading">
@@ -28,7 +28,7 @@
             <div class="col-md-12 col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Form Edit Kategori</h4>
+                        <h4 class="card-title">Form Edit Jenis Wisata</h4>
                     </div>
                     <div class="card-content">
                         <div class="card-body">
@@ -39,9 +39,9 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="email-id-vertical">Nama Kategori</label>
+                                                <label for="email-id-vertical">Nama Jenis Wisata</label>
                                                 <input type="text" id="email-id-vertical" class="form-control"
-                                                    name="nama_kategori" placeholder="Nama Kategori" value="{{ $data->nama_kategori }}">
+                                                    name="nama_kategori" placeholder="Nama Jenis Wisata" value="{{ $data->nama_kategori }}">
                                             </div>
                                         </div>
                                         <div class="col-12 d-flex justify-content-center">

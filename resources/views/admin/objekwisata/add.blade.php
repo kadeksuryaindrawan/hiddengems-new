@@ -38,9 +38,9 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="email-id-vertical">Pilih Kategori</label>
+                                                <label for="email-id-vertical">Pilih Jenis Wisata</label>
                                                 <select name="kategori_id" id="" class="form-control">
-                                                    <option value="">Pilih Kategori</option>
+                                                    <option value="">Pilih Jenis Wisata</option>
                                                     @foreach ($kategoris as $items)
                                                         <option value="{{ $items->id }}">{{ $items->nama_kategori }}</option>
                                                     @endforeach
@@ -49,9 +49,16 @@
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="email-id-vertical">Nama Objek Wisata</label>
-                                                <input type="text" id="email-id-vertical" class="form-control"
+                                                <label for="nama">Nama Objek Wisata</label>
+                                                <input type="text" id="nama" class="form-control"
                                                     name="nama" placeholder="Nama Objek Wisata" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="harga_tiket">Harga Tiket</label>
+                                                <input type="number" id="harga_tiket" class="form-control"
+                                                    name="harga_tiket" placeholder="Harga Tiket" required>
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -91,6 +98,19 @@
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
+                                                <label for="sosial_media" class="form-label">Sosial Media</label>
+                                                <textarea class="form-control" id="sosial_media" rows="3" name="sosial_media" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="kontak">Kontak</label>
+                                                <input type="text" id="kontak" class="form-control"
+                                                    name="kontak" placeholder="Kontak" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
                                                 <label for="image">Foto</label>
                                                 <input type="file" id="image" class="filepond"
                                                     name="image" multiple credits="false" required>
@@ -124,23 +144,30 @@
 
         let map = new L.map('map' , mapOptions);
 
-        let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        let layer = new L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png');
         map.addLayer(layer);
 
-
         let marker = null;
-        map.on('click', (event)=> {
 
-            if(marker !== null){
+        function setMarker(lat, lng) {
+            if (marker !== null) {
                 map.removeLayer(marker);
             }
+            marker = L.marker([lat, lng]).addTo(map);
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+        }
 
-            marker = L.marker([event.latlng.lat , event.latlng.lng]).addTo(map);
+        map.on('click', (event) => {
+            setMarker(event.latlng.lat, event.latlng.lng);
+        });
 
-            document.getElementById('latitude').value = event.latlng.lat;
-            document.getElementById('longitude').value = event.latlng.lng;
-
-        })
+        L.Control.geocoder({
+        defaultMarkGeocode: false
+        }).on('markgeocode', function (event) {
+            let latlng = event.geocode.center;
+            setMarker(latlng.lat, latlng.lng);
+        }).addTo(map);
 
         FilePond.registerPlugin(FilePondPluginImagePreview);
 

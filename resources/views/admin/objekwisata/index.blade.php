@@ -57,7 +57,7 @@
                                     <tr>
                                         <th>NO</th>
                                         <th>Pengelola</th>
-                                        <th>Kategori</th>
+                                        <th>Jenis Wisata</th>
                                         <th>Nama Objek Wisata</th>
                                         <th>Action</th>
                                     </tr>

@@ -3,8 +3,8 @@
 @section('content')
 
 @php
-    $page = 'kategori';
-    $title = 'Kategori';
+    $page = 'jeniswisata';
+    $title = 'Jenis Wisata';
 @endphp
 
 <div class="page-heading">
@@ -23,10 +23,10 @@
                   </div>
                 @endif
 
-                <h3>Kategori</h3>
+                <h3>Jenis Wisata</h3>
                 <div class="my-3">
                     <a href="{{ route('kategori.create') }}">
-                        <button class="btn btn-primary my-2">Tambah Kategori</button>
+                        <button class="btn btn-primary my-2">Tambah Jenis Wisata</button>
                     </a>
                 </div>
             </div>
@@ -45,7 +45,7 @@
     <section class="section">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Daftar Kategori</h4>
+                        <h4 class="card-title">Daftar Jenis Wisata</h4>
                     </div>
                     <div class="card-body" style="overflow-x: scroll;">
                         <!-- table bordered -->
@@ -53,7 +53,7 @@
                                 <thead>
                                     <tr>
                                         <th>NO</th>
-                                        <th>Nama Kategori</th>
+                                        <th>Nama Jenis Wisata</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>

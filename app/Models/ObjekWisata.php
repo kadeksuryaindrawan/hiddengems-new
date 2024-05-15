@@ -13,11 +13,14 @@ class ObjekWisata extends Model
         'pengelola_id',
         'kategori_id',
         'nama',
+        'harga_tiket',
         'alamat',
         'longitude',
         'latitude',
         'deskripsi',
         'fasilitas',
+        'sosial_media',
+        'kontak',
     ];
 
     public function kategori(){

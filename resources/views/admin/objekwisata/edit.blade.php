@@ -39,9 +39,9 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="email-id-vertical">Pilih Kategori</label>
+                                                <label for="email-id-vertical">Pilih Jenis Wisata</label>
                                                 <select name="kategori_id" id="" class="form-control">
-                                                    <option value="">Pilih Kategori</option>
+                                                    <option value="">Pilih Jenis Wisata</option>
                                                     @foreach ($kategoris as $items)
                                                         <option value="{{ $items->id }}" {{ ( $items->id == $data->kategori_id) ? 'selected' : '' }}>{{ $items->nama_kategori }}</option>
                                                     @endforeach
@@ -53,6 +53,13 @@
                                                 <label for="email-id-vertical">Nama Objek Wisata</label>
                                                 <input type="text" id="email-id-vertical" class="form-control"
                                                     name="nama" placeholder="Nama Objek Wisata" value="{{ $data->nama }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="harga_tiket">Harga Tiket</label>
+                                                <input type="number" id="harga_tiket" class="form-control"
+                                                    name="harga_tiket" value="{{ $data->harga_tiket }}" placeholder="Harga Tiket" required>
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -90,6 +97,19 @@
                                                 <textarea class="form-control" id="fasilitas" rows="3" name="fasilitas" required>{{ $data->fasilitas }}</textarea>
                                             </div>
                                         </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="sosial_media" class="form-label">Sosial Media</label>
+                                                <textarea class="form-control" id="sosial_media" rows="3" name="sosial_media" required>{{ $data->sosial_media }}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="kontak">Kontak</label>
+                                                <input type="text" id="kontak" class="form-control"
+                                                    name="kontak" placeholder="Kontak" value="{{ $data->kontak }}" required>
+                                            </div>
+                                        </div>
                                         <div class="col-12 d-flex justify-content-center">
                                             <button type="submit" class="btn btn-primary me-1 my-2 w-100">Simpan</button>
                                         </div>
@@ -112,34 +132,43 @@
 
     <script>
 
-    let mapOptions = {
-        center:[{{ $data->latitude }}, {{ $data->longitude }}],
-        zoom:13
-    }
-
-    let map = new L.map('map' , mapOptions);
-
-    let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-    map.addLayer(layer);
-
-    var latlong = L.marker([{{ $data->latitude }}, {{ $data->longitude }}]).addTo(map);
-
-    let marker = null;
-    map.on('click', (event)=> {
-
-        map.removeLayer(latlong);
-
-        if(marker !== null){
-            map.removeLayer(marker);
-
+        let mapOptions = {
+            center:[{{ $data->latitude }}, {{ $data->longitude }}],
+            zoom:13
         }
 
-        marker = L.marker([event.latlng.lat , event.latlng.lng]).addTo(map);
+        let map = new L.map('map' , mapOptions);
 
-        document.getElementById('latitude').value = event.latlng.lat;
-        document.getElementById('longitude').value = event.latlng.lng;
+        let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        map.addLayer(layer);
+        // let geocoder = L.Control.geocoder().addTo(map);
 
-    })
+        var latlong = L.marker([{{ $data->latitude }}, {{ $data->longitude }}]).addTo(map);
+
+        let marker = null;
+
+        function setMarker(lat, lng) {
+            if (marker !== null) {
+                map.removeLayer(marker);
+            }
+            marker = L.marker([lat, lng]).addTo(map);
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+        }
+
+        map.on('click', (event) => {
+            map.removeLayer(latlong);
+            // document.querySelector('.leaflet-control-geocoder-form input').value = '';
+            setMarker(event.latlng.lat, event.latlng.lng);
+        });
+
+        L.Control.geocoder({
+        defaultMarkGeocode: false
+        }).on('markgeocode', function (event) {
+            let latlng = event.geocode.center;
+            map.removeLayer(latlong);
+            setMarker(latlng.lat, latlng.lng);
+        }).addTo(map);
     </script>
 
 @endsection

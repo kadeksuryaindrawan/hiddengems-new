@@ -43,7 +43,8 @@
                                 </div>
                                 <div class="col-12">
                                     <p>Nama Objek Wisata : <strong>{{ $data->nama }}</strong></p>
-                                    <p>Kategori : <strong>{{ $data->kategori->nama_kategori }}</strong></p>
+                                    <p>Harga Tiket : <strong>Rp. {{ number_format($data->harga_tiket,0,",",".") }}</strong></p>
+                                    <p>Jenis Wisata : <strong>{{ $data->kategori->nama_kategori }}</strong></p>
                                     @if ($data->pengelola_id == NULL)
                                         <p>Pengelola : <span class="text-danger">Belum Ada</span></p>
                                     @endif
@@ -57,6 +58,8 @@
                                     </div>
                                     <p>Deskripsi : <strong>{{ $data->deskripsi }}</strong></p>
                                     <p>Fasilitas : <strong>{{ $data->fasilitas }}</strong></p>
+                                    <p>Sosial Media : <strong>{{ $data->sosial_media }}</strong></p>
+                                    <p>Kontak : <strong>{{ $data->kontak }}</strong></p>
 
                                 </div>
 

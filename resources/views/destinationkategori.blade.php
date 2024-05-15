@@ -20,17 +20,12 @@
     </section>
 
 
-
-    <section class="ftco-section">
-        <div class="container">
-            <div class="row">
-                @if (isset($key))
-                    <p>Hasil Pencarian Untuk : <span class="text-success">{{ $key }}</span></p>
-                @endif
-
-                @if ($datas->count()>0)
+    @if ($datas->count()>0)
+        <section class="ftco-section">
+            <div class="container">
+                <div class="row">
                     <div class="col-lg-12" style="margin-bottom: 70px;">
-                        <h4 class="h4">Peta Destinasi</h4>
+                        <h4 class="h4">Peta Destinasi {{ ucwords($kategori->nama_kategori) }}</h4>
                         <div id="map" style="width: 100%;height: 500px;border-radius: 10px;z-index:1;"></div>
                         <div id="data" style="display: none;">
                             @foreach($datas as $item)
@@ -40,7 +35,7 @@
                     </div>
 
                     <div class="col-lg-12">
-                        <h4 class="h4">Daftar Destinasi</h4>
+                        <h4 class="h4">Daftar Destinasi {{ ucwords($kategori->nama_kategori) }}</h4>
                     </div>
                     @foreach ($datas as $item)
                         <div class="col-md-4 ftco-animate">
@@ -57,43 +52,37 @@
                             </a>
                         </div>
                     @endforeach
-                @else
-                <div class="col-lg-12 text-center">
-                    <p class="text-danger my-5">Belum Ada Data !</p>
+
+
                 </div>
-                @endif
-
-
-
-
             </div>
-        </div>
-    </section>
+        </section>
 
-    <script>
+        <script>
 
-        let mapOptions = {
-            center:[-8.795349, 115.168552],
-            zoom:12
-        }
+            let mapOptions = {
+                center:[-8.795349, 115.168552],
+                zoom:12
+            }
 
-        let map = new L.map('map' , mapOptions);
+            let map = new L.map('map' , mapOptions);
 
-        let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-        map.addLayer(layer);
+            let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+            map.addLayer(layer);
 
-        let dataItems = document.querySelectorAll('.item');
-        dataItems.forEach(item => {
-            let lat = item.dataset.lat;
-            let lng = item.dataset.lng;
-            let nama = item.dataset.nama;
-            let deskripsi = item.dataset.deskripsi;
+            let dataItems = document.querySelectorAll('.item');
+            dataItems.forEach(item => {
+                let lat = item.dataset.lat;
+                let lng = item.dataset.lng;
+                let nama = item.dataset.nama;
+                let deskripsi = item.dataset.deskripsi;
 
-            var latlong = L.marker([lat, lng]);
-            latlong.addTo(map).bindPopup("<b>" + nama + "</b><br><p>" + deskripsi + "</p><a target='_BLANK' href='https://www.google.com/maps?q=" + lat + "," + lng + "'><button class='btn btn-primary btn-sm'>Lihat Pada Maps</button></a>");
-        });
+                var latlong = L.marker([lat, lng]);
+                latlong.addTo(map).bindPopup("<b>" + nama + "</b><br><p>" + deskripsi + "</p><a target='_BLANK' href='https://www.google.com/maps?q=" + lat + "," + lng + "'><button class='btn btn-primary btn-sm'>Lihat Pada Maps</button></a>");
+            });
+        </script>
+    @else
+        <p class="text-center text-danger my-5">Belum Ada Data !</p>
+    @endif
 
-
-
-    </script>
 @endsection

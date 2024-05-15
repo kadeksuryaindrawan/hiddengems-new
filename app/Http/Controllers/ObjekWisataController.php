@@ -54,11 +54,14 @@ class ObjekWisataController extends Controller
         $validator = Validator::make($request->all(), [
             'kategori_id' => 'required',
             'nama'=>['required', 'string', 'max:255','unique:objek_wisatas'],
+            'harga_tiket' => ['required', 'numeric'],
             'alamat'=>['required', 'string'],
             'longitude'=>['required', 'string'],
             'latitude'=>['required', 'string'],
             'deskripsi'=>['required', 'string'],
             'fasilitas'=>['required', 'string'],
+            'sosial_media' => ['required'],
+            'kontak' => ['required'],
         ]);
 
         $temporary_images = TemporaryImage::all();
@@ -78,11 +81,14 @@ class ObjekWisataController extends Controller
                 'pengelola_id' => NULL,
                 'kategori_id' => $request->kategori_id,
                 'nama' => $request->nama,
+                'harga_tiket' => $request->harga_tiket,
                 'alamat' => $request->alamat,
                 'longitude' => $request->longitude,
                 'latitude' => $request->latitude,
                 'deskripsi' => $request->deskripsi,
                 'fasilitas' => $request->fasilitas,
+                'sosial_media' => $request->sosial_media,
+                'kontak' => $request->kontak,
             ]);
             foreach ($temporary_images as $temporary_image) {
                 File::copy(public_path('images/tmp/' . $temporary_image->folder . '/' . $temporary_image->file), public_path('images/objekwisata/' . $temporary_image->folder . '/' . $temporary_image->file));
@@ -141,23 +147,29 @@ class ObjekWisataController extends Controller
         if($data->nama == $request->nama){
             $request->validate([
                 'kategori_id' => 'required',
-                'nama'=>['required', 'string', 'max:255'],
-                'alamat'=>['required', 'string'],
-                'longitude'=>['required', 'string'],
-                'latitude'=>['required', 'string'],
-                'deskripsi'=>['required', 'string'],
-                'fasilitas'=>['required', 'string']
+                'nama' => ['required', 'string', 'max:255'],
+                'harga_tiket' => ['required', 'numeric'],
+                'alamat' => ['required', 'string'],
+                'longitude' => ['required', 'string'],
+                'latitude' => ['required', 'string'],
+                'deskripsi' => ['required', 'string'],
+                'fasilitas' => ['required', 'string'],
+                'sosial_media' => ['required'],
+                'kontak' => ['required'],
             ]);
         }
         else{
             $request->validate([
                 'kategori_id' => 'required',
-                'nama'=>['required', 'string', 'max:255','unique:objek_wisatas'],
-                'alamat'=>['required', 'string'],
-                'longitude'=>['required', 'string'],
-                'latitude'=>['required', 'string'],
-                'deskripsi'=>['required', 'string'],
-                'fasilitas'=>['required', 'string']
+                'nama' => ['required', 'string', 'max:255', 'unique:objek_wisatas'],
+                'harga_tiket' => ['required', 'numeric'],
+                'alamat' => ['required', 'string'],
+                'longitude' => ['required', 'string'],
+                'latitude' => ['required', 'string'],
+                'deskripsi' => ['required', 'string'],
+                'fasilitas' => ['required', 'string'],
+                'sosial_media' => ['required'],
+                'kontak' => ['required'],
             ]);
         }
 
@@ -165,11 +177,14 @@ class ObjekWisataController extends Controller
                 ObjekWisata::where('id',$id)->update([
                     'kategori_id' => $request->kategori_id,
                     'nama' => $request->nama,
+                    'harga_tiket' => $request->harga_tiket,
                     'alamat' => $request->alamat,
                     'longitude' => $request->longitude,
                     'latitude' => $request->latitude,
                     'deskripsi' => $request->deskripsi,
                     'fasilitas' => $request->fasilitas,
+                    'sosial_media' => $request->sosial_media,
+                    'kontak' => $request->kontak,
                     ]);
 
             return redirect()->route('objekwisata.index')->with('success', 'Objek wisata berhasil diedit!');

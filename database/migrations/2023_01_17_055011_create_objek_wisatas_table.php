@@ -18,11 +18,14 @@ class CreateObjekWisatasTable extends Migration
             $table->foreignId('pengelola_id')->nullable();
             $table->foreignId('kategori_id');
             $table->string('nama');
+            $table->double('harga_tiket');
             $table->text('alamat');
             $table->text('longitude');
             $table->text('latitude');
             $table->text('deskripsi');
             $table->text('fasilitas');
+            $table->text('sosial_media');
+            $table->string('kontak');
             $table->timestamps();
         });
     }

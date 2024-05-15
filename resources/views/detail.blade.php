@@ -40,9 +40,12 @@
                 <!-- col end -->
                 <div class="col-lg-6 mt-5">
                     <h2 class="h2">{{ ucwords($data->nama) }}</h2>
-                    <p>Kategori : <span class="text-primary">{{ ucwords($data->kategori->nama_kategori) }}</span></p>
+                    <p>Jenis Wisata : <span class="text-primary">{{ ucwords($data->kategori->nama_kategori) }}</span></p>
+                    <p>Harga Tiket : <span>Rp. {{ number_format($data->harga_tiket,0,",",".") }}</span></p>
                     <p>Alamat : <span>{{ ucfirst($data->alamat) }}</span></p>
                     <p>Fasilitas : <span>{{ ucfirst($data->fasilitas) }}</span></p>
+                    <p>Sosial Media : <span>{{ $data->sosial_media }}</span></p>
+                    <p>Kontak : <span>{{ $data->kontak }}</span></p>
                 </div>
 
                 <div class="col-lg-12"  style="margin-top: 50px;">

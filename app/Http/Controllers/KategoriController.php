@@ -44,7 +44,7 @@ class KategoriController extends Controller
             Kategori::create([
                 'nama_kategori' => $request->nama_kategori
             ]);
-            return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambah!');
+            return redirect()->route('kategori.index')->with('success', 'Jenis Wisata berhasil ditambah!');
         }catch(\Throwable $th){
             throw $th;
         }
@@ -99,7 +99,7 @@ class KategoriController extends Controller
                 'nama_kategori' => $request->nama_kategori
             ]);
 
-            return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diedit!');
+            return redirect()->route('kategori.index')->with('success', 'Jenis Wisata berhasil diedit!');
         }catch(\Throwable $th){
             throw $th;
         }
@@ -115,6 +115,6 @@ class KategoriController extends Controller
     {
         Kategori::destroy($id);
 
-        return redirect()->back()->with('success', 'Kategori berhasil dihapus!');
+        return redirect()->back()->with('success', 'Jenis Wisata berhasil dihapus!');
     }
 }

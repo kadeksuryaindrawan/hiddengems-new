@@ -54,8 +54,22 @@
                 <ul class="navbar-nav ml-auto">
                     <li <?php echo $page == 'home' ? "class='nav-item active'" : "class='nav-item'"; ?>><a href="{{ url('/') }}" class="nav-link">Home</a></li>
                     <li <?php echo $page == 'about' ? "class='nav-item active'" : "class='nav-item'"; ?>><a href="{{ url('/about') }}" class="nav-link">About</a></li>
-                    <li <?php echo $page == 'destination' ? "class='nav-item active'" : "class='nav-item'"; ?>><a href="{{ url('/destination') }}" class="nav-link">Destination</a></li>
+                    <li <?php echo $page == 'destination' ? "class='nav-item dropdown active'" : "class='nav-item dropdown'"; ?>>
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Destination
+                        </a>
+                        <div class="dropdown-menu" style="margin-top: -10px;" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ url('/destination') }}">All</a>
+                            @foreach ($kategoris as $kategori)
+                                <a class="dropdown-item" href="{{ route('destinationkategori',$kategori->id) }}">{{ ucwords($kategori->nama_kategori) }}</a>
+                            @endforeach
+                        </div>
+                    </li>
                     <li <?php echo $page == 'contact' ? "class='nav-item active'" : "class='nav-item'"; ?>><a href="{{ url('/contact') }}" class="nav-link">Contact</a></li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-toggle="modal" data-target="#searchModal"><i class="fas fa-search"></i></a>
+                    </li>
 
 
 
@@ -82,6 +96,27 @@
     </nav>
     <!-- END nav -->
 
+    <!-- Search Modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchModalLabel">Cari Destinasi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('search') }}" method="GET">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="key" placeholder="Cari nama destinasi/alamat/jenis wisata">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Cari</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     @yield('content')
 
     <footer class="ftco-footer bg-bottom ftco-no-pt" style="background-image: url(images/bg_3.jpg);">

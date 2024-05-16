@@ -208,7 +208,7 @@
         let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
         map.addLayer(layer);
 
-        // L.control.locate().addTo(map);
+        L.control.locate().addTo(map);
 
         let dataItems = document.querySelectorAll('.item');
 

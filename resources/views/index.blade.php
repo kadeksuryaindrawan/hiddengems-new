@@ -84,7 +84,29 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-12 heading-section text-center ftco-animate">
-                    <h2 class="mb-4">Peta Destinasi</h2>
+                    <h2 class="mb-4">Peta Semua Destinasi</h2>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div id="map1" style="width: 100%;height: 500px;border-radius: 10px; z-index:1;"></div>
+                    <div id="data1" style="display: none;">
+                        @foreach($datas as $item1)
+                            <div class="item1" data-lat="{{ $item1->latitude }}" data-lng="{{ $item1->longitude }}" data-nama="{{ $item1->nama }}" data-deskripsi="{{ $item1->deskripsi }}"></div>
+                        @endforeach
+                    </div>
+                </div>
+
+          </div>
+        </div>
+    </section>
+
+    <section class="ftco-section" style="margin-bottom: -150px; margin-top: -150px;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12 heading-section text-center ftco-animate">
+                    <h2 class="mb-4">3 Destinasi Terdekat Dari Tempat Anda</h2>
                 </div>
             </div>
             <div class="row">
@@ -175,29 +197,100 @@
 
     <script>
 
+        //near me
         let mapOptions = {
-            center:[-8.795349, 115.168552],
-            zoom:12
-        }
+            center: [-8.795349, 115.168552],
+            zoom: 10
+        };
 
-        let map = new L.map('map' , mapOptions);
+        let map = new L.map('map', mapOptions);
 
         let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
         map.addLayer(layer);
 
-        let dataItems = document.querySelectorAll('.item');
-        dataItems.forEach(item => {
-            let lat = item.dataset.lat;
-            let lng = item.dataset.lng;
-            let nama = item.dataset.nama;
-            let deskripsi = item.dataset.deskripsi;
+        // L.control.locate().addTo(map);
 
-            var latlong = L.marker([lat, lng]);
-            latlong.addTo(map).bindPopup("<b>" + nama + "</b><br><p>" + deskripsi + "</p><a target='_BLANK' href='https://www.google.com/maps?q=" + lat + "," + lng + "'><button class='btn btn-primary btn-sm'>Lihat Pada Maps</button></a>");
+        let dataItems = document.querySelectorAll('.item');
+
+        // Function to calculate distance using Haversine formula
+        function getDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371e3; // Radius of the Earth in meters
+            const φ1 = lat1 * Math.PI/180; // φ, λ in radians
+            const φ2 = lat2 * Math.PI/180;
+            const Δφ = (lat2-lat1) * Math.PI/180;
+            const Δλ = (lon2-lon1) * Math.PI/180;
+
+            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                    Math.cos(φ1) * Math.cos(φ2) *
+                    Math.sin(Δλ/2) * Math.sin(Δλ/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+            const d = R * c; // in meters
+            return d;
+        }
+
+        // Get current location
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            // Find the three nearest locations
+            const distances = Array.from(dataItems).map(item => {
+                const itemLat = parseFloat(item.dataset.lat);
+                const itemLng = parseFloat(item.dataset.lng);
+                const nama = item.dataset.nama;
+                const deskripsi = item.dataset.deskripsi;
+
+                return {
+                    lat: itemLat,
+                    lng: itemLng,
+                    nama: nama,
+                    deskripsi: deskripsi,
+                    distance: getDistance(lat, lon, itemLat, itemLng)
+                };
+            });
+
+            distances.sort((a, b) => a.distance - b.distance);
+
+            const nearestLocations = distances.slice(0, 3);
+
+            // Add markers to map for the three nearest locations
+            nearestLocations.forEach(location => {
+                let distanceInKm = (location.distance / 1000).toFixed(2);
+                let marker = L.marker([location.lat, location.lng]);
+                marker.addTo(map).bindPopup("<b>" + location.nama + "</b><br><p>" + location.deskripsi + "</p><p>Jarak: " + distanceInKm + " km</p><a target='_BLANK' href='https://www.google.com/maps?q=" + location.lat + "," + location.lng + "'><button class='btn btn-primary btn-sm'>Lihat Pada Maps</button></a>");
+            });
+
+            // Center map to location
+            map.setView([-8.795349, 115.168552], 12);
         });
 
+    </script>
 
+    <script>
+        //peta destinasi
+        let mapOptions1 = {
+            center:[-8.795349, 115.168552],
+            zoom:12
+        }
 
+        let map1 = new L.map('map1' , mapOptions1);
+
+        let layer1 = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        map1.addLayer(layer1);
+
+        let dataItems1 = document.querySelectorAll('.item1');
+
+        console.log(dataItems1);
+        dataItems1.forEach(item1 => {
+            let lat = item1.dataset.lat;
+            let lng = item1.dataset.lng;
+            let nama = item1.dataset.nama;
+            let deskripsi = item1.dataset.deskripsi;
+
+            var latlong = L.marker([lat, lng]);
+            latlong.addTo(map1).bindPopup("<b>" + nama + "</b><br><p>" + deskripsi + "</p><a target='_BLANK' href='https://www.google.com/maps?q=" + lat + "," + lng + "'><button class='btn btn-primary btn-sm'>Lihat Pada Maps</button></a>");
+        });
     </script>
 
 @endsection

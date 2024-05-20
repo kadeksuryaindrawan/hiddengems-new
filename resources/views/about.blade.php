@@ -23,12 +23,11 @@
       <div class="row d-flex">
         <div class="col-md-6 order-md-last heading-section pl-md-5 ftco-animate d-flex align-items-center">
          <div class="w-100">
-          <span class="subheading">Welcome to Pacific</span>
+          <span class="subheading">Welcome to Hidden Gem Kuta Selatan</span>
           <h2 class="mb-4">It's time to start your adventure</h2>
           <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
           <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
           A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-          <p><a href="#" class="btn btn-primary py-3 px-4">Search Destination</a></p>
         </div>
       </div>
       <div class="col-md-6">
@@ -104,7 +103,6 @@
            <span class="subheading">About Us</span>
            <h2 class="mb-4">Make Your Tour Memorable and Safe With Us</h2>
            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-           <p><a href="#" class="btn btn-primary">Book Your Destination</a></p>
          </div>
        </div>
      </div>

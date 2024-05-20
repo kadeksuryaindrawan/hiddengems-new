@@ -1,6 +1,16 @@
 @extends('layouts.home')
 @section('content')
 
+<style>
+        #map {
+            width: 100%;
+            height: 500px;
+            display: none;
+            border-radius: 10px;
+            z-index: 1;
+        }
+</style>
+
 @php
     $page = 'home';
 @endphp
@@ -10,7 +20,7 @@
     <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center" data-scrollax-parent="true">
             <div class="col-md-7 ftco-animate">
-                <span class="subheading">Welcome to Hidden Gems of Kuta Selatans</span>
+                <span class="subheading">Welcome to Hidden Gems Kuta Selatan</span>
                 <h1 class="mb-4">Temukan Tempat Favorit Anda Bersama Kami</h1>
                 <p class="caps">Bepergian ke sudut manapun di Kuta Selatan, tanpa ribet</p>
             </div>
@@ -28,12 +38,11 @@
             <div class="row d-flex">
                 <div class="col-md-6 order-md-last heading-section pl-md-5 ftco-animate d-flex align-items-center">
                     <div class="w-100">
-                        <span class="subheading">Welcome to Pacific</span>
+                        <span class="subheading">Welcome to Hidden Gems Kuta Selatan</span>
                         <h2 class="mb-4">It's time to start your adventure</h2>
                         <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
                         <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
                         A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-                        <p><a href="#" class="btn btn-primary py-3 px-4">Search Destination</a></p>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -106,29 +115,58 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-12 heading-section text-center ftco-animate">
+                    <h2 class="mb-4">Cari Destinasi Terdekat Dari Lokasi Anda</h2>
+                </div>
+            </div>
+            <div class="row">
+
+                        <div class="col-6 mb-2">
+                            <label for="">Latitude</label>
+                            <input type="text" class="form-control" id="latitude" placeholder="Latitude" readonly>
+                        </div>
+                        <div class="col-6 mb-2">
+                            <label for="">Longitude</label>
+                            <input type="text" class="form-control" id="longitude" placeholder="Longitude" readonly>
+                        </div>
+                        <div class="col-lg-12 mb-2">
+                            <div id="map3" style="width: 100%;height: 500px;border-radius: 10px;z-index:1;"></div>
+                        </div>
+                        <div class="col-12">
+                            <button style="position:relative;z-index:1;" class="btn btn-primary" id="findLocation">Cari Lokasi Destinasi</button>
+                        </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="ftco-section" style="margin-bottom: -150px;margin-top: -150px;">
+        <div class="container">
+            <div class="row justify-content-center" id="judulMap">
+                <div class="col-md-12 heading-section text-center ftco-animate">
                     <h2 class="mb-4">3 Destinasi Terdekat Dari Tempat Anda</h2>
                 </div>
             </div>
             <div class="row">
 
-                <div class="col-lg-12">
-                    <div id="map" style="width: 100%;height: 500px;border-radius: 10px; z-index:1;"></div>
-                    <div id="data" style="display: none;">
-                        @foreach($datas as $item)
-                            <div class="item" data-lat="{{ $item->latitude }}" data-lng="{{ $item->longitude }}" data-nama="{{ $item->nama }}" data-deskripsi="{{ $item->deskripsi }}"></div>
-                        @endforeach
-                    </div>
-                </div>
+                        <div class="col-12">
+                            <div id="map"></div>
+                            <div id="data" style="display: none;">
+                                @foreach($datas as $item)
+                                    <div class="item" data-lat="{{ $item->latitude }}" data-lng="{{ $item->longitude }}" data-nama="{{ $item->nama }}" data-deskripsi="{{ $item->deskripsi }}"></div>
+                                @endforeach
+                            </div>
+                        </div>
 
-          </div>
+            </div>
         </div>
     </section>
+
 
     <section class="ftco-section">
         <div class="container">
             <div class="row justify-content-center pb-4">
                 <div class="col-md-12 heading-section text-center ftco-animate">
-                    <h2 class="mb-4">Destinasi</h2>
+                    <h2 class="mb-4">Daftar Destinasi Terakhir</h2>
                 </div>
             </div>
             <div class="row">
@@ -185,7 +223,6 @@
                                     <span class="subheading">About Us</span>
                                     <h2 class="mb-4">Make Your Tour Memorable and Safe With Us</h2>
                                     <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-                                    <p><a href="#" class="btn btn-primary">Book Your Destination</a></p>
                                 </div>
                             </div>
                         </div>
@@ -195,7 +232,7 @@
         </div>
     </section>
 
-    <script>
+    {{-- <script>
 
         //near me
         let mapOptions = {
@@ -208,7 +245,19 @@
         let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
         map.addLayer(layer);
 
-        L.control.locate().addTo(map);
+        L.control.locate({
+            position: 'topright',
+            setView: 'once',
+            keepCurrentZoomLevel: true,
+            flyTo: true,
+            locateOptions: {
+                enableHighAccuracy: true,
+                maxZoom: 16,
+                watch: false,
+                setView: true,
+                timeout: 10000
+            }
+        }).addTo(map);
 
         let dataItems = document.querySelectorAll('.item');
 
@@ -265,6 +314,138 @@
             map.setView([-8.795349, 115.168552], 12);
         });
 
+    </script> --}}
+
+    <script>
+        //choose location
+        let mapOptions3 = {
+            center:[-8.383678, 115.185108],
+            zoom:10
+        }
+
+        let map3 = new L.map('map3' , mapOptions3);
+
+        let layer3 = new L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png');
+        map3.addLayer(layer3);
+
+        let marker = null;
+
+        function setMarker(lat, lng) {
+            if (marker !== null) {
+                map3.removeLayer(marker);
+            }
+            marker = L.marker([lat, lng]).addTo(map3);
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+        }
+
+        map3.on('click', (event) => {
+            setMarker(event.latlng.lat, event.latlng.lng);
+        });
+
+        L.Control.geocoder({
+        defaultMarkGeocode: false
+        }).on('markgeocode', function (event) {
+            let latlng = event.geocode.center;
+            setMarker(latlng.lat, latlng.lng);
+        }).addTo(map3);
+    </script>
+
+    <script>
+        //near me
+        let map;
+        let markers = [];
+
+        document.getElementById('map').style.display ='none';
+
+        document.getElementById('judulMap').style.display ='none';
+
+        document.getElementById('findLocation').addEventListener('click', function() {
+            const lat = parseFloat(document.getElementById('latitude').value);
+            const lon = parseFloat(document.getElementById('longitude').value);
+            if (isNaN(lat) || isNaN(lon)) {
+                alert('Harap masukkan koordinat yang valid');
+                return;
+            }
+            // Show the map if it's hidden
+            if (document.getElementById('map').style.display === 'none') {
+                document.getElementById('map').style.display = 'block';
+                document.getElementById('judulMap').style.display = 'block';
+                initializeMap(lat, lon);
+                updateMap(lat, lon);
+            } else {
+                updateMap(lat, lon);
+            }
+        });
+
+        function initializeMap(lat, lon) {
+            let mapOptions = {
+                center: [lat, lon],
+                zoom: 10
+            };
+
+            map = new L.map('map', mapOptions);
+            let layer = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+            map.addLayer(layer);
+        }
+
+        function updateMap(lat, lon) {
+            map.setView([-8.795349, 115.168552], 12);
+
+            // Clear existing markers
+            markers.forEach(marker => {
+                map.removeLayer(marker);
+            });
+            markers = [];
+
+            let dataItems = document.querySelectorAll('.item');
+
+            // Function to calculate distance using Haversine formula
+            function getDistance(lat1, lon1, lat2, lon2) {
+                const R = 6371e3; // Radius of the Earth in meters
+                const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
+                const φ2 = lat2 * Math.PI / 180;
+                const Δφ = (lat2 - lat1) * Math.PI / 180;
+                const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+                const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                        Math.cos(φ1) * Math.cos(φ2) *
+                        Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+                const d = R * c; // in meters
+                return d;
+            }
+
+            // Find the three nearest locations
+            const distances = Array.from(dataItems).map(item => {
+                const itemLat = parseFloat(item.dataset.lat);
+                const itemLng = parseFloat(item.dataset.lng);
+                const nama = item.dataset.nama;
+                const deskripsi = item.dataset.deskripsi;
+
+                return {
+                    lat: itemLat,
+                    lng: itemLng,
+                    nama: nama,
+                    deskripsi: deskripsi,
+                    distance: getDistance(lat, lon, itemLat, itemLng)
+                };
+            });
+
+            distances.sort((a, b) => a.distance - b.distance);
+
+            // Get only the three nearest locations
+            const nearestLocations = distances.slice(0, 3);
+
+            // Add markers to map for the three nearest locations
+            nearestLocations.forEach(location => {
+                let distanceInKm = (location.distance / 1000).toFixed(2);
+                let marker = L.marker([location.lat, location.lng]);
+                marker.addTo(map).bindPopup("<b>" + location.nama + "</b><br><p>" + location.deskripsi + "</p><p>Jarak: " + distanceInKm + " km</p><a target='_BLANK' href='https://www.google.com/maps?q=" + location.lat + "," + location.lng + "'><button class='btn btn-primary btn-sm'>Lihat Pada Maps</button></a>");
+                markers.push(marker);
+            });
+        }
     </script>
 
     <script>
